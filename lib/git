@@ -1,0 +1,12 @@
+[core]
+	pager = "9 nobs"
+[user]
+	email = o@olowe.co
+[alias]
+	co = checkout
+	st = status
+	ci = commit
+	up = pull -r
+	b = branch
+[fetch]
+	prune = true
