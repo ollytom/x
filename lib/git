@@ -4,7 +4,7 @@
 	email = o@olowe.co
 [alias]
 	co = checkout
-	st = status
+	st = status -s
 	ci = commit
 	up = pull -r
 	b = branch
