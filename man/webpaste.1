@@ -1,0 +1,21 @@
+.Dd
+.Dt WEBPASTE 1
+.Sh NAME
+.Nm webpaste
+.Nd create a web paste on clbin.com
+.Sh SYNOPSIS
+.Nm
+.Op Ar file
+.Sh DESCRIPTION
+The
+.Nm
+utility reads from
+.Ar file ,
+or the standard input if none is specified,
+and creates a paste from its contents on the clbin.com service.
+A URL to the paste is printed on success.
+.Sh EXIT STATUS
+.Ex
+.Sh SEE ALSO
+.Xr curl 1 ,
+.Lk https://clbin.com The clbin website

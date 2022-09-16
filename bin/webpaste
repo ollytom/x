@@ -1,0 +1,14 @@
+#!/bin/sh
+
+usage="webpaste [file]"
+
+file='<-'
+if test $# -eq 1
+then
+	file="@$1"
+else
+	echo $usage
+	exit 1
+fi
+
+curl -s -F clbin="$file" https://clbin.com
