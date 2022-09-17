@@ -1,0 +1,23 @@
+.Dd
+.Dt JSFMT 1
+.Sh NAME
+.Nm jsfmt
+.Nd format javascript source code
+.Sh SYNOPSIS
+.Nm
+.Op Fl w
+.Op Ar
+.Sh DESCRIPTION
+.Nm
+copies the given javascript source files
+.Pq standard input if none specified
+to the standard output after formatting with
+.Xr prettier 1 .
+.Pp
+The
+.Fl w
+flag causes the files to be edited in place.
+.Sh EXIT STATUS
+.Ex
+.Sh SEE ALSO
+.Lk https://prettier.io The prettier project website
