@@ -1,12 +1,13 @@
 #!/bin/sh
 
-usage="webpaste [file]"
+usage="usage: webpaste [file]"
 
-file='<-'
+file='<-' # standard input
 if test $# -eq 1
 then
 	file="@$1"
-else
+elif test $# -gt 1
+then
 	echo $usage
 	exit 1
 fi
