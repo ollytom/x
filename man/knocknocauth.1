@@ -1,0 +1,50 @@
+.Dd
+.Dt KNOCKNOCAUTH 1
+.Os
+.Sh NAME
+.Nm knocknocauth
+.Nd create and close knocknoc sessions
+.Sh SYNOPSIS
+.Nm knocknocauth
+.Op -c
+.Ar host ...
+.Sh DESCRIPTION
+.Nm
+authenticates and creates a new session with each Knocknoc
+.Ar host .
+.Pp
+Credentials for
+.Ar host
+may be provided in a credentials file.
+Credentials files consists of two lines.
+The first line is a knocknoc username,
+and the second line is their password.
+.Nm
+searches the default user configuration directory
+for a file with the same name as
+.Ar host .
+.Pp
+If no matching credentials file can be found,
+.Nm
+prompts for a username and password.
+.Pp
+The -c flag can be set to close any existing sessions with
+.Ar host .
+.Sh EXIT STATUS
+.Ex
+.Sh EXAMPLES
+Create sessions with
+.Ar login.example.com
+and
+.Ar vendoraccess.example.net :
+.Pp
+.Dl knocknocauth login.example.com vendoraccess.example.net
+.Pp
+A credentials file for the user oliver.lowe@company.example at login.example.com
+would be at
+.Pa $HOME/.config/knocknoc/login.example.com
+with the following contents:
+.Bd -literal -offset indent
+oliver.lowe@company.example
+SecretPassword1234
+.Ed
