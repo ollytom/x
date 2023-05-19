@@ -1,0 +1,54 @@
+#!/bin/sh
+
+usage="usage: hlsget [-d] [-ls] url"
+
+args=`getopt dls $*`
+if [ $? -ne 0 ]
+then
+	echo $usage
+	exit 2
+fi
+set -- $args
+while [ $# -ne 0 ]
+do
+	case "$1"
+	in
+		-l)
+			list=true; shift;;
+			debug=true; shift;;
+		-s)
+			split=true; shift;;
+		-d)
+			debug=true; shift;;
+		--)
+			shift; break;;
+	esac
+done
+
+if test $# -eq 0
+then
+	echo $usage
+	exit 2
+fi
+
+url=$1
+base=`basename -d $url || dirname $url`
+
+# strip manifest tags and carriage returns
+segments=`curl -s "$url" | grep -v '^#' | tr -d '\015'`
+
+for seg in $segments
+do
+	if test $debug
+	then
+		echo "$base/$seg" 1>&2
+	elif test $list
+	then
+		continue
+	elif test $split
+	then
+		curl -s -O "$base/$seg"
+		continue
+	fi
+	curl -s "$base/$seg"
+done
