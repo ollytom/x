@@ -32,6 +32,7 @@ then
 fi
 
 url=$1
+# basename may not have the -d option, so try dirname too.
 base=`basename -d $url || dirname $url`
 
 # strip manifest tags and carriage returns

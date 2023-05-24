@@ -1,0 +1,33 @@
+.Dd
+.Dt HLSGET 1
+.Sh Name
+.Nm hlsget
+.Nd download the contents of a HLS playlist
+.Sh SYNOPSIS
+.Nm
+.Op Fl d
+.Op Fl ls
+.Ar url
+.Sh DESCRIPTION
+.Nm
+reads the m3u8 playlist pointed to by
+.Ar url,
+fetches each file listed
+and writes it to the standard output.
+.Pp
+The following flags are understood:
+.Bl -tag -width Ds
+.It Fl d
+Enable debugging output to standard error.
+.It Fl l
+Print the URLs to each file in the playlist; do not download.
+.It Fl s
+Write each file in the playlist to a new file in the current working directory
+instead of concatenating to the standard output.
+.Sh EXAMPLE
+Stream video to ffplay(1):
+.Dl hlsget http://video.example.com/index.m3u8 | ffplay -i -
+.Sh EXIT STATUS
+.Ex
+.Sh SEE ALSO
+.Xr curl 1
