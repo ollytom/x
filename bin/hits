@@ -1,0 +1,18 @@
+#!/usr/bin/awk -f
+
+# skip requests with bad method
+<UNKNOWN> {
+	next
+}
+
+{
+	host = $1
+	path = host $8
+	hits[path]++
+}
+
+END {
+	for (path in hits) {
+		printf "%d %s\n", hits[path], path
+	}
+}

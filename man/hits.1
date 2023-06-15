@@ -1,0 +1,45 @@
+.Dd
+.Dt HITS 1
+.Sh NAME
+.Nm hits
+.Nd count web traffic
+.Sh SYNOPSIS
+.Nm
+.Op Ar
+.Sh DESCRIPTION
+.Nm
+counts HTTP requests from web server request log files
+and reports the number of requests per path.
+If no files are specified,
+.Nm
+reads from the standard input.
+.Pp
+The log must be in the default format produced by
+OpenBSD's
+.Xr httpd 8
+and
+.Xr nginx 8 .
+Here is an example line:
+.Dl default 192.0.2.1 - - [19/Dec/2022:23:12:34 +1100] "GET /some/file.txt HTTP/1.1" 200 256
+.Sh EXIT STATUS
+.Ex
+.Sh EXAMPLES
+Print the most-requested paths
+from the latest access log:
+.Bd -literal -offset indent
+hits /var/www/logs/access.log | sort | tail
+.Ed
+.Pp
+Print the least-requested blog entries from 2021:
+.Bd -literal -offset indent
+grep 'blog/2021/' /var/www/logs/access.log | hits | sort | sed 10q
+.Ed
+.Pp
+Print the 20 most-requested paths
+from all access logs:
+.Bd -literal -offset indent
+cd /var/www/logs
+gunzip -c access*.gz | cat access.log | hits | sort -r | sed 20q
+.Ed
+.Sh SEE ALSO
+.Xr awk 1
