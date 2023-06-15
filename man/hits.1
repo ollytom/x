@@ -27,19 +27,19 @@ Here is an example line:
 Print the most-requested paths
 from the latest access log:
 .Bd -literal -offset indent
-hits /var/www/logs/access.log | sort | tail
+hits /var/www/logs/access.log | sort -n | tail
 .Ed
 .Pp
 Print the least-requested blog entries from 2021:
 .Bd -literal -offset indent
-grep 'blog/2021/' /var/www/logs/access.log | hits | sort | sed 10q
+grep 'blog/2021/' /var/www/logs/access.log | hits | sort -n | sed 10q
 .Ed
 .Pp
 Print the 20 most-requested paths
 from all access logs:
 .Bd -literal -offset indent
 cd /var/www/logs
-gunzip -c access*.gz | cat access.log | hits | sort -r | sed 20q
+gunzip -c access*.gz | cat access.log | hits | sort -nr | sed 20q
 .Ed
 .Sh SEE ALSO
 .Xr awk 1
