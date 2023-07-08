@@ -1,0 +1,34 @@
+.Dd
+.Dt LEMMYVERSE 1
+.Sh Name
+.Nm lemmyverse
+.Nd search lemmy communities
+.Sh SYNOPSIS
+.Nm
+.Ar pattern
+.Sh DESCRIPTION
+.Nm
+searches Lemmy communities indexed by
+.Pa lemmyverse.net
+using the given regular expression.
+Both the names and descriptions of the communities are searched.
+.Pp
+On first run, a search index file of communities must be generated.
+The full community database is downloaded from
+.Pa https://lemmyverse.net
+and stored in the user cache directory.
+.Nm
+then generates the index.
+To fetch a new database or generate a new index,
+remove each file respectively.
+.Sh EXAMPLE
+Find communities for the Plan 9 operating system:
+.Dl lemmyverse '(plan9)|(Plan 9)'
+.Pp
+List all communities from the instance lemmy.sdf.org:
+.Dl lemmyverse '.*@lemmy.sdf.org'
+.Sh EXIT STATUS
+.Ex
+.Sh SEE ALSO
+.Xr curl 1 ,
+.Lk https://lemmyverse.net

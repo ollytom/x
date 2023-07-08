@@ -1,0 +1,31 @@
+#!/bin/sh
+
+usage='usage: lemmyverse pattern'
+if test $# -ne 1
+then
+	echo $usage
+	exit 2
+fi
+
+cachedir=$HOME/.cache/lemmyverse
+mkdir -p $cachedir
+cd $cachedir
+if ! test -f community.full.json
+then
+	curl --compressed https://lemmyverse.net/data/community.full.json > community.full.json
+fi
+
+if test -f communities
+then
+	grep $@ $cachedir/communities
+	exit $?
+fi
+
+< community.full.json tr ',' '
+' | tr -d '"{}' | grep '(^baseurl)|(^name)|(^desc)' | awk -F :  '
+$1 == "baseurl" { instance=$2 }
+$1 == "desc"{ desc = $2 }
+$1 == "name" { name = $2 }
+NR % 3 == 0 { printf "%s@%s\t%s\n", name, instance, desc }'  | grep -v 'enoweiooe' | sort > communities
+
+grep $@ $cachedir/communities
