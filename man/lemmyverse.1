@@ -2,13 +2,13 @@
 .Dt LEMMYVERSE 1
 .Sh NAME
 .Nm lemmyverse
-.Nd search lemmy communities
+.Nd find lemmy communities
 .Sh SYNOPSIS
 .Nm
 .Ar pattern
 .Sh DESCRIPTION
 .Nm
-searches Lemmy communities indexed by
+finds Lemmy communities indexed by
 .Pa lemmyverse.net
 using the given regular expression as interpreted by
 .Xr grep 1 .
@@ -35,7 +35,7 @@ Community database from lemmyverse.net.
 uses the following environment variables:
 .Bl -tag -width Ds
 .It Ev XDG_CACHE_DIR
-The directory to store the community database and index.
+The directory to store the community database.
 If unset,
 .Pa $HOME/.cache/lemmyverse
 is used.
