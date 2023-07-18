@@ -1,6 +1,6 @@
 .Dd
 .Dt LEMMYVERSE 1
-.Sh Name
+.Sh NAME
 .Nm lemmyverse
 .Nd search lemmy communities
 .Sh SYNOPSIS
@@ -10,25 +10,45 @@
 .Nm
 searches Lemmy communities indexed by
 .Pa lemmyverse.net
-using the given regular expression.
+using the given regular expression as interpreted by
+.Xr grep 1 .
 Both the names and descriptions of the communities are searched.
 .Pp
-On first run, a search index file of communities must be generated.
-The full community database is downloaded from
+On first run, a local community database must be generated.
+The full community index is downloaded from
 .Pa https://lemmyverse.net
-and stored in the user cache directory.
+using
+.Xr curl 1 ,
+transformed,
+then stored in the user cache directory.
+To regenerate the database,
+remove the file and run
 .Nm
-then generates the index.
-To fetch a new database or generate a new index,
-remove each file respectively.
-.Sh EXAMPLE
+again.
+.Sh FILES
+.Bl -tag -width Ds
+.It Pa communities
+Community database from lemmyverse.net.
+.El
+.Sh ENVIRONMENT
+.Nm
+uses the following environment variables:
+.Bl -tag -width Ds
+.It Ev XDG_CACHE_DIR
+The directory to store the community database and index.
+If unset,
+.Pa $HOME/.cache/lemmyverse
+is used.
+.El
+.Sh EXAMPLES
 Find communities for the Plan 9 operating system:
 .Dl lemmyverse '(plan9)|(Plan 9)'
 .Pp
 List all communities from the instance lemmy.sdf.org:
-.Dl lemmyverse '.*@lemmy.sdf.org'
+.Dl lemmyverse '@lemmy.sdf.org'
 .Sh EXIT STATUS
 .Ex
 .Sh SEE ALSO
+.Xr grep 1 ,
 .Xr curl 1 ,
 .Lk https://lemmyverse.net
