@@ -1,0 +1,13 @@
+#!/bin/sh
+
+usage='usage: xstream addr'
+
+if test $# -ne 1
+then
+	echo $usage
+	exit 127
+fi
+
+addr=$1
+ffmpeg -hide_banner -f x11grab -i $DISPLAY -r 25 \
+	-f mpegts -c:v mpeg2video -b:v 3000k udp://$addr

@@ -1,0 +1,39 @@
+.Dd
+.Dt XSTREAM 1
+.Sh NAME
+.Nm xstream
+.Nd stream X display over the network
+.Sh SYNOPSIS
+.Nm
+.Ar address
+.Sh DESCRIPTION
+.Nm
+captures the primary
+.Xr X 7
+display from
+.Ev DISPLAY
+and sends encoded video to
+.Ar address
+via MPEG-TS in UDP.
+.Ar address
+must be provided in
+.Ar host:port
+format.
+.Pp
+Video is encoded with MPEG-2 at a bitrate of 3000kbps.
+This is to minimise the use of system resources
+on machines with older processors
+and on systems with no hardware video encoding support.
+To customise these settings,
+study the
+.Nm
+script and use
+.Xr ffmpeg 1
+directly.
+.Sh EXIT STATUS
+.Ex
+.Sh EXAMPLE
+Send video to live.olowe.co port 6969:
+.Dl xstream live.olowe.co:6969
+.Sh SEE ALSO
+.Xr ffmpeg 1
