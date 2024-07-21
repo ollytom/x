@@ -1,7 +1,9 @@
 [core]
 	pager = "9 nobs"
 [user]
+	name = Oliver Lowe
 	email = o@olowe.co
+
 [alias]
 	co = checkout
 	st = status -s
