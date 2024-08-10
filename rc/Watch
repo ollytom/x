@@ -1,0 +1,47 @@
+#!/bin/rc
+
+usage='usage: Watch arg ...'
+
+fn showtop{
+	echo -n '0,0' >>$1/addr
+	echo 'dot=addr' >>$1/ctl
+	echo show >>$1/ctl
+}	
+
+if(! test -e /mnt/acme/acme){
+	echo 'Watch: must be executed from acme'
+	exit '/mnt/acme/acme: no such directory'
+}
+if(~ $* ''){
+	echo 'Watch: no command'
+	echo $usage
+	exit 'no command'
+}
+
+id=`{sed 1q /dev/new/ctl | awk '{print $1}'}
+win=/mnt/acme/$id
+wd=`{pwd | tr -d '
+'}
+
+echo nomenu >>$win/ctl
+echo name $wd/+Watch >>$win/ctl
+
+echo '% ' $* >>$win/body
+echo $* | rc >>$win/body
+echo clean >>$win/ctl
+echo scratch >>$win/ctl
+showtop $win
+
+while(test -e $win){
+	if(sed 1q /mnt/acme/log | grep 'put '$wd'' >/dev/null) {
+		echo dirty >>$win/ctl
+		echo -n '0,$' >>$win/addr
+		echo '% ' $* >$win/data
+		echo $* | rc >>$win/body
+		echo clean >>$win/ctl
+		echo scratch >>$win/ctl
+		showtop $win
+	}
+}
+
+echo 'window deleted' >>/dev/null
