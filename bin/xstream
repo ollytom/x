@@ -9,5 +9,6 @@ then
 fi
 
 addr=$1
-ffmpeg -hide_banner -f x11grab -i $DISPLAY -r 25 \
-	-f mpegts -c:v mpeg2video -b:v 3000k udp://$addr
+ffmpeg -hide_banner -r 20 -s 1920x1080 -f x11grab -i $DISPLAY  \
+	-f rtp -pix_fmt yuvj420p -c:v mjpeg -huffman 0 -force_duplicated_matrix 1 \
+	-b:v 20000k -q:v 7 rtp://$addr
