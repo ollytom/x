@@ -1,0 +1,26 @@
+.Dd
+.Dt LLAMA 1
+.Sh NAME
+.Nm llama
+.Nd prompt a large language model
+.Sh SYNOPSIS
+.Nm
+.Op Fl b
+.Sh DESCRIPTION
+.Nm
+reads a prompt from the standard input
+and sends it to a large language model hosted by Groq.
+The reply is written to the standard output.
+The default model is Llama 3 8B.
+.Pp
+A Groq API token must be written to
+.Pa $HOME/.config/groq/token .
+.Pp
+The following flags are understood:
+.Bl -tag -width Ds
+.It Fl b
+Prompt the "bigger" 70B model.
+.Sh EXAMPLE
+.Dl echo 'What is LLM slop?' | llama
+.Sh EXIT STATUS
+.Ex

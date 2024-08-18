@@ -8,5 +8,6 @@ hits - count web traffic
 hlsget - download the contents of a HLS playlist
 jsfmt - format javascript source code
 lemmyverse - find lemmy communities
+llama - prompt a large language model
 webpaste - create a web paste on webpaste.olowe.co
 xstream - stream X display over the network
