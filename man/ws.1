@@ -1,0 +1,38 @@
+.Dd
+.Dt WS 1
+.Sh NAME
+.Nm ws
+.Nd web search
+.Sh SYNOPSIS
+.Nm
+.Ar query ...
+.Sh DESCRIPTION
+.Nm
+sends the query to a web search engine
+.Pq default DuckDuckGo
+and prints the results to the standard output.
+.Sh EXAMPLE
+.Pp
+Find the Plan 9 Foundation home page:
+.Dl ws Plan 9 foundation
+.Pp
+Search the web for motorcycle parts for
+Yamaha's discontinued dual-sport motorcycle:
+.Bd -literal -offset Ds
+ws '"wr250r parts"' Australia
+.Ed
+.Pp
+The first two keywords are quoted
+to include search results containing both
+.Dq wr250r
+and
+.Dq parts .
+This is again enclosed in single quotes to ensure
+.Xr sh 1
+does not interpret its own quote characters.
+.Sh EXIT STATUS
+.Ex
+.Sh SEE ALSO
+.Xr curl 1 ,
+.Xr awk 1 ,
+.Lk https://duckduckgo.com/duckduckgo-help-pages/features/non-javascript/ How To Use the Non-JavaScript Version of DuckDuckGo Search

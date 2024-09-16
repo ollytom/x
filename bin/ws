@@ -1,0 +1,20 @@
+#!/bin/sh
+
+firefox="Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
+
+prog='
+/duckduckgo.com\/y.js/ { next } # skip ads
+/Sponsored link/ { next } # skip ads
+/result-link/ {
+	$1=$1
+	link = substr($3, index($3, "\""), length($3))
+	link = substr(link, 2, length(link)-2)
+
+	title = substr($0, index($0, ">")+1, length)
+	title = substr(title, 1, index(title, "<")-1)
+	print link
+	print "\t" title
+}
+'
+
+curl -s -d "q=$@" -H "User-Agent: $firefox" https://lite.duckduckgo.com/lite/ | awk "$prog"

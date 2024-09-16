@@ -10,4 +10,5 @@ The following commands are provided:
 - lemmyverse - find lemmy communities
 - llama - prompt a large language model
 - webpaste - create a web paste on webpaste.olowe.co
+- ws - web search
 - xstream - stream X display over the network
