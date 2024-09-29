@@ -5,13 +5,13 @@ import os
 import sys
 import urllib.request
 
-# these models hallucinate
-# model = "llama3.1-8b-instant"
-# model = "llama-3.1-70b-versatile"
-
 url = "https://api.groq.com/openai/v1/chat/completions"
-model = "llama3-8b-8192"
-big =  "llama3-70b-8192"
+# small models include:
+# llama-3.1-8b-instant
+# llama-3.2-3b-preview
+# llama-3.2-1b-preview
+model = "llama-3.2-3b-preview"
+big = "llama-3.1-70b-versatile"
 
 def read_token(name):
 	with open(name) as f:
@@ -28,7 +28,7 @@ message = {"messages": [{"role": "user","content": prompt}], "model": model}
 req = urllib.request.Request(url, json.dumps(message).encode())
 req.add_header("Content-Type", "application/json")
 req.add_header("Authorization", "Bearer "+token)
-# groq blocks urllib's user agent?!
+# groq blocks urllib's user agent
 req.add_header("User-Agent", "curl/8.9.0")
 
 with urllib.request.urlopen(req) as resp:

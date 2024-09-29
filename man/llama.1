@@ -11,7 +11,7 @@
 reads a prompt from the standard input
 and sends it to a large language model hosted by Groq.
 The reply is written to the standard output.
-The default model is Llama 3 8B.
+The default model is Llama 3.2 3B.
 .Pp
 A Groq API token must be written to
 .Pa $HOME/.config/groq/token .
@@ -19,7 +19,7 @@ A Groq API token must be written to
 The following flags are understood:
 .Bl -tag -width Ds
 .It Fl b
-Prompt the "bigger" 70B model.
+Prompt the "bigger" LLama 3.1 70B model.
 .Sh EXAMPLE
 .Dl echo 'What is LLM slop?' | llama
 .Sh EXIT STATUS
