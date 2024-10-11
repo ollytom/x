@@ -1,0 +1,20 @@
+#!/bin/sh
+
+auth=`sed 1q $home/.config/atlassian/basicauth`
+
+usage='usage: confl url'
+
+if test $# -eq 1
+then
+	echo $usage
+	exit 1
+fi
+
+dir=`dirname $1`
+id=`basename $dir`
+
+host=`echo $1 | sed 's!^https?://!!' | awk -F / '{print $1}'`
+
+url=https://$host/wiki/rest/api/content/$id?expand=body.view
+
+curl -s -u $auth $url | jq -r .body.view.value
