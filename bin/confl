@@ -1,10 +1,10 @@
 #!/bin/sh
 
+# https://docs.atlassian.com
 auth=`sed 1q $home/.config/atlassian/basicauth`
 
 usage='usage: confl url'
-
-if test $# -eq 1
+if test $# -ne 1
 then
 	echo $usage
 	exit 1
@@ -13,8 +13,8 @@ fi
 dir=`dirname $1`
 id=`basename $dir`
 
-host=`echo $1 | sed 's!^https?://!!' | awk -F / '{print $1}'`
+host=`echo $1 | sed 's!^https?://!!' | awk -F / '{print $3}'`
 
-url=https://$host/wiki/rest/api/content/$id?expand=body.view
+url=https://$host/wiki/api/v2/pages/$id?body-format=anonymous_export_view
 
-curl -s -u $auth $url | jq -r .body.view.value
+curl -s -u $auth $url | jq -r .body.anonymous_export_view.value
