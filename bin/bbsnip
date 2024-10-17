@@ -1,28 +1,48 @@
 #!/bin/sh
 
-usage='usage: bbsnip [file ...]'
+usage='usage: bbsnip file [...]'
 
 # Snippets overview | Bitbucket Cloud
 # https://support.atlassian.com/bitbucket-cloud/docs/snippets-overview/
 # https://developer.atlassian.com/bitbucket/api/2/reference/resource/snippets
 
 # https://docs.atlassian.com
-confpath="$HOME/.config/atlassian/basicauth"
+confpath="$HOME/.config/atlassian/bitbucket.org"
 if ! test -f $confpath
 then
 	echo "load auth from $confpath: no such file"
 	exit 1
 fi
-auth=`sed 1q $home/.config/atlassian/basicauth`
+auth=`sed 1q $confpath`
 
-files="-F file=<-" # standard input
-if test $1
+if ! test $1
 then
-	files=""
-	for f in $@
-	do
-		files="-F file=@$f $files"
-	done
+	echo $usage
+	exit 2
 fi
 
-curl -s -u $auth https://api.bitbucket.org/2.0/snippets $files
+for f in $@
+do
+	if ! test -f $f
+	then
+		echo "open $f: no such file" 1>&2
+		continue
+	fi
+	files="-F file=@$f $files"
+done
+if test -z "$files"
+then
+	echo "no files" 1>&2
+	exit 1
+fi
+
+curl -s -u $auth $files https://api.bitbucket.org/2.0/snippets/audinate \
+	| sed 's/}/\n/g' \
+	| tr -d '{}",' \
+	| sed 's/href//g' \
+	| grep '^html' \
+	| sed 's/^html:://g' \
+	| sed 1q
+
+# the pipeline creates newline-delimited links from JSON structured like below
+# {"links":{"self":{"href":"https://api.bitbucket.org/2.0/snippets/example/MzBoBz"},"html":{"href":"https://bitbucket.org/example/workspace/snippets/MzBoBz"},"commits":{"href":"https://api.bitbucket.org/2.0/snippets/example/MzBoBz/commits"},"comments":{"href":"https://api.bitbucket.org/2.0/snippets/example/MzBoBz/comments"},"watchers":{"href":"https://api.bitbucket.org/2.0/snippets/example/MzBoBz/watchers"},"diff":{"href":"https://api.bitbucket.org/2.0/snippets/example/MzBoBz/c81b16e0a2ff5a62421210dd42d4118bb2407a8d/diff"},"clone":[{"name":"https","href":"https://oliverlowe@bitbucket.org/snippets/example/MzBoBz/untitled-snippet.git"},{"name":"ssh","href":"git@bitbucket.org:snippets/example/MzBoBz/untitled-snippet.git"}],"patch":{"href":"https://api.bitbucket.org/2.0/snippets/example/MzBoBz/c81b16e0a2ff5a62421210dd42d4118bb2407a8d/patch"}},"type":"snippet","id":"MzBoBz","title":"","scm":"git","created_on":"2024-10-17T09:54:00.728326+00:00","updated_on":"2024-10-17T09:54:00.728340+00:00","owner":{"display_name":"example","links":{"self":{"href":"https://api.bitbucket.org/2.0/workspaces/%7Bced171c1-c5f6-4764-a40f-2f3d95e465c0%7D"},"avatar":{"href":"https://bitbucket.org/account/example/avatar/"},"html":{"href":"https://bitbucket.org/%7Bced171c1-c5f6-4764-a40f-2f3d95e465c0%7D/"}},"type":"team","uuid":"{ced171c1-c5f6-4764-a40f-2f3d95e465c0}","username":"example"},"workspace":{"type":"workspace","uuid":"{ced171c1-c5f6-4764-a40f-2f3d95e465c0}","name":"example","slug":"example","links":{"avatar":{"href":"https://bitbucket.org/workspaces/example/avatar/?ts=1725923130"},"html":{"href":"https://bitbucket.org/example/"},"self":{"href":"https://api.bitbucket.org/2.0/workspaces/example"}}},"creator":{"display_name":"Oliver Lowe","links":{"self":{"href":"https://api.bitbucket.org/2.0/users/%7B10a97824-3836-4423-b44b-102c46c2b49c%7D"},"avatar":{"href":"https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/OL-6.png"},"html":{"href":"https://bitbucket.org/%7B10a97824-3836-4423-b44b-102c46c2b49c%7D/"}},"type":"user","uuid":"{10a97824-3836-4423-b44b-102c46c2b49c}","account_id":"712020:7e4caa14-0f34-4288-ae22-288b37e49dc7","nickname":"oliver.lowe"},"is_private":false,"files":{"bbsnip.1":{"links":{"self":{"href":"https://api.bitbucket.org/2.0/snippets/example/MzBoBz/c81b16e0a2ff5a62421210dd42d4118bb2407a8d/files/bbsnip.1"},"html":{"href":"https://bitbucket.org/snippets/example/MzBoBz/revisions/c81b16e0a2ff5a62421210dd42d4118bb2407a8d#file-bbsnip.1"}}}}}
