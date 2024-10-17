@@ -1,0 +1,23 @@
+.Dd
+.Dt BBSNIP 1
+.Sh NAME
+.Nm bbsnip
+.Nd create a snippet on BitBucket
+.Sh SYNOPSIS
+.Nm
+.Op Ar
+.Sh DESCRIPTION
+The
+.Nm
+utility reads from the named files
+or the standard input if none is specified,
+and creates a snippet from its contents on the BitBucket hosted service.
+A URL to the snippet is printed on success.
+.Sh FILES
+.Pa Ev /.config/atlassian/basicauth
+.Sh EXIT STATUS
+.Ex
+.Sh SEE ALSO
+.Xr curl 1 ,
+.Lk https://support.atlassian.com/bitbucket-cloud/docs/snippets-overview/ Bitbucket's Snippets overview
+.Lk https://developer.atlassian.com/bitbucket/api/2/reference/ Bitbucket HTTP API reference

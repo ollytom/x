@@ -1,0 +1,28 @@
+#!/bin/sh
+
+usage='usage: bbsnip [file ...]'
+
+# Snippets overview | Bitbucket Cloud
+# https://support.atlassian.com/bitbucket-cloud/docs/snippets-overview/
+# https://developer.atlassian.com/bitbucket/api/2/reference/resource/snippets
+
+# https://docs.atlassian.com
+confpath="$HOME/.config/atlassian/basicauth"
+if ! test -f $confpath
+then
+	echo "load auth from $confpath: no such file"
+	exit 1
+fi
+auth=`sed 1q $home/.config/atlassian/basicauth`
+
+files="-F file=<-" # standard input
+if test $1
+then
+	files=""
+	for f in $@
+	do
+		files="-F file=@$f $files"
+	done
+fi
+
+curl -s -u $auth https://api.bitbucket.org/2.0/snippets $files
