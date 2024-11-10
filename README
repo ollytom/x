@@ -4,11 +4,13 @@ To install, run install.sh.
 
 The following commands are provided:
 
+- bbsnip - create a snippet on BitBucket
 - hits - count web traffic
 - hlsget - download the contents of a HLS playlist
 - jsfmt - format javascript source code
 - lemmyverse - find lemmy communities
 - llama - prompt a large language model
+- precis - summarise text
 - webpaste - create a web paste on webpaste.olowe.co
 - ws - web search
 - xstream - stream X display over the network

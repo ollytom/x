@@ -1,0 +1,21 @@
+.Dd
+.Dt PRECIS 1
+.Sh NAME
+.Nm precis
+.Nd summarise text
+.Sh SYNOPSIS
+.Nm
+.Op Ar model
+.Sh DESCRIPTION
+.Nm
+reads text from the standard input
+and prints a short summary using a large language model.
+.Ar model
+is a path to a gguf model file.
+The default is
+.Pa $HOME/llama-3.2-3b-instruct-q4_k_m.gguf .
+.Sh EXIT STATUS
+.Ex
+.Sh SEE ALSO
+.Xr llama-cli 1 ,
+.Lk https://github.com/ggerganov/llama.cpp llama.cpp
