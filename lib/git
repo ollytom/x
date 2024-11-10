@@ -14,3 +14,5 @@
 	prune = true
 [push]
 	autoSetupRemote = true
+[diff]
+	noprefix = true
