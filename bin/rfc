@@ -1,0 +1,11 @@
+#!/bin/sh
+
+name=rfc$1.txt
+url=https://www.rfc-editor.org/rfc/$name
+mkdir -p $HOME/.cache/rfc
+cache=$HOME/.cache/rfc/$name
+if ! test -f $cache
+then
+	curl -s $url > $cache
+fi
+/usr/local/plan9/bin/9 B $cache

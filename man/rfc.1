@@ -1,0 +1,18 @@
+.Dd
+.Dt RFC 1
+.Sh NAME
+.Nm rfc
+.Nd read IETF RFC documents
+.Sh SYNOPSIS
+.Nm
+.Ar number
+.Sh DESCRIPTION
+.Nm
+opens the given numbered RFC in the editor
+via a
+.Xr plumb 7
+message.
+The plain text version from rfc-editor.org is downloaded
+and stored in the user cache directory
+.Pa $HOME/.cache/rfc
+for faster subsequent reads.
