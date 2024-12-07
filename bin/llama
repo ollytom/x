@@ -10,8 +10,8 @@ url = "https://api.groq.com/openai/v1/chat/completions"
 # llama-3.1-8b-instant
 # llama-3.2-3b-preview
 # llama-3.2-1b-preview
-model = "llama-3.2-3b-preview"
-big = "llama-3.1-70b-versatile"
+model = "llama-3.1-8b-instant"
+big = "llama-3.3-70b-versatile"
 
 def read_token(name):
 	with open(name) as f:
