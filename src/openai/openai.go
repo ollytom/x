@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type Role string
@@ -27,6 +28,15 @@ type Chat struct {
 	ResponseFormat *struct {
 		Type string `json:"type"`
 	} `json:"response_format,omitempty"`
+}
+
+type Model struct {
+	ID               string
+	Name             string
+	Description      string
+	Aliases          []string
+	MaxContextLength int
+	Deprecation      time.Time
 }
 
 type Client struct {
@@ -105,4 +115,31 @@ func (c *Client) Complete(chat *Chat) (*Message, error) {
 		return nil, fmt.Errorf("no completions in response")
 	}
 	return &cresp.Choices[0].Message, nil
+}
+
+func (c *Client) Models() ([]Model, error) {
+	u := c.BaseURL + "/v1/models"
+	req, err := http.NewRequest(http.MethodGet, u, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var aerr apiError
+		if err := json.NewDecoder(resp.Body).Decode(&aerr); err != nil {
+			return nil, fmt.Errorf(resp.Status)
+		}
+		return nil, aerr
+	}
+	v := struct {
+		Data []Model
+	}{}
+	if err := json.NewDecoder(resp.Body).Decode(&v); err != nil {
+		return nil, fmt.Errorf("decode response: %w", err)
+	}
+	return v.Data, nil
 }
