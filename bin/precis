@@ -1,24 +1,6 @@
 #!/bin/sh
 
-# https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_2
+sys='Summarise text provided by the user.
+Reply only with the summary text.'
 
-sys='<|start_header_id|>system<|end_header_id|>
-You summarise text provided by the user. Reply only with the summary text.<|eot_id|>
-<|start_header_id|>user<|end_header_id|>'
-
-tmp=`mktemp`
-echo "$sys" > $tmp
-cat >> $tmp
-echo '<|eot_id|>' >> $tmp
-echo -n '<|start_header_id|>assistant<|end_header_id|>' >> $tmp
-
-usage="usage: precis [model]"
-
-model=$HOME/llama-3.2-3b-instruct-q4_k_m.gguf
-if test $1
-then
-	model=$1
-fi
-
-llama-cli -m  --no-display-prompt -c 8192 -f $tmp 2>/dev/null
-rm $tmp
+llm -s "$sys" $1

@@ -1,0 +1,63 @@
+.Dd
+.Dt LLAMA 1
+.Sh NAME
+.Nm llm
+.Nd chat with a remote large language model
+.Sh SYNOPSIS
+.Nm
+.Op Fl c
+.Op Fl m Ar model
+.Op Fl s Ar prompt
+.Op Fl u Ar url
+.Sh DESCRIPTION
+.Nm
+starts a chat with a large language model.
+The prompt is read from the standard input
+and the reply is written to the standard output.
+Any model available through
+the OpenAI-compatible chat completion HTTP API
+can be used.
+.Pp
+A back-and-forth chat may be started using the
+.Fl c
+flag.
+In this mode,
+a line consisting of just a literal dot character
+.Pq "."
+sends the prompt.
+Subsequent replies and prompts are included as context for the model's responses.
+.Pp
+An API key written to
+.Pa $HOME/.config/openai/key
+will be included with each request for authentication.
+.Pp
+The following flags are understood:
+.Bl -tag -width Ds
+.It Fl c
+Start a back-and-forth chat.
+.It Fl m Ar model
+Prompt
+.Ar model .
+The default is
+.Ar ministral-8b-latest .
+Note that
+.Xr llama-server 1
+from llama.cpp ignores this value.
+.It Fl s Ar prompt
+Set
+.Ar prompt
+as the system prompt.
+.It Fl u Ar url
+Connect to the OpenAI API root at
+.Ar url .
+The default is
+.Ar http://127.0.0.1:8080 .
+.Sh EXAMPLE
+.Pp
+Chat with a locally-hosted Mistral NeMo model:
+.Bd -literal -offset Ds
+llama-server -m models/Mistral-Nemo-Instruct-2407-Q6_K.gguf -c 16384 -fa &
+echo "Hello, world!" | llm
+.Ed
+.Sh EXIT STATUS
+.Ex

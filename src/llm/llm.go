@@ -16,8 +16,8 @@ import (
 )
 
 var model = flag.String("m", "ministral-8b-latest", "model")
-var baseURL = flag.String("u", "https://api.mistral.ai", "openai API base URL")
-var sysPrompt = flag.String("s", "You are a helpful assistant.", "system prompt")
+var baseURL = flag.String("u", "http://127.0.0.1:8080", "openai API base URL")
+var sysPrompt = flag.String("s", "", "system prompt")
 var converse = flag.Bool("c", false, "start a back-and-forth chat")
 
 func readToken() (string, error) {
@@ -61,11 +61,11 @@ func main() {
 	}
 	client := &openai.Client{http.DefaultClient, token, *baseURL}
 
-	chat := openai.Chat{
-		Messages: []openai.Message{
+	chat := openai.Chat{Model: *model}
+	if *sysPrompt != "" {
+		chat.Messages =  []openai.Message{
 			{openai.RoleSystem, *sysPrompt},
-		},
-		Model: *model,
+		}
 	}
 	buf := &bytes.Buffer{}
 	if !*converse {
