@@ -43,6 +43,7 @@ func copyAll(w io.Writer, paths []string) (n int64, err error) {
 		if err != nil {
 			errs = append(errs, fmt.Errorf("copy %s: %w", name, err))
 		}
+		f.Close()
 		n += nn
 	}
 	return n, errors.Join(errs...)
