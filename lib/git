@@ -1,5 +1,5 @@
 [core]
-	pager = "9 nobs"
+	pager = cat
 [user]
 	name = Oliver Lowe
 	email = o@olowe.co
@@ -10,6 +10,7 @@
 	ci = commit
 	up = pull -r
 	b = branch
+	fp = format-patch
 [fetch]
 	prune = true
 [push]
