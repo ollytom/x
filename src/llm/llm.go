@@ -15,19 +15,9 @@ import (
 	"olowe.co/x/openai"
 )
 
-var model = flag.String("m", "ministral-8b-latest", "model")
-var baseURL = flag.String("u", "http://127.0.0.1:8080", "openai API base URL")
+var model = flag.String("m", "", "model")
 var sysPrompt = flag.String("s", "", "system prompt")
 var converse = flag.Bool("c", false, "start a back-and-forth chat")
-
-func readToken() (string, error) {
-	confDir, err := os.UserConfigDir()
-	if err != nil {
-		return "", err
-	}
-	b, err := os.ReadFile(path.Join(confDir, "openai/token"))
-	return string(bytes.TrimSpace(b)), err
-}
 
 func copyAll(w io.Writer, paths []string) (n int64, err error) {
 	if len(paths) == 0 {
@@ -56,15 +46,25 @@ func init() {
 }
 
 func main() {
-	token, err := readToken()
+	confDir, err := os.UserConfigDir()
 	if err != nil {
-		log.Fatalf("read auth token: %v", err)
+		log.Fatal(err)
 	}
-	client := &openai.Client{http.DefaultClient, token, *baseURL}
+	config, err := readConfig(path.Join(confDir, "openai"))
+	if err != nil {
+		log.Fatalf("read configuration: %v", err)
+	}
+	if *model == "" {
+		*model = config.DefaultModel
+	}
+	if config.BaseURL == "" {
+		config.BaseURL = "http://127.0.0.1:8080"
+	}
+	client := &openai.Client{http.DefaultClient, config.Token, config.BaseURL}
 
 	chat := openai.Chat{Model: *model}
 	if *sysPrompt != "" {
-		chat.Messages =  []openai.Message{
+		chat.Messages = []openai.Message{
 			{openai.RoleSystem, *sysPrompt},
 		}
 	}

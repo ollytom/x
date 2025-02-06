@@ -8,7 +8,6 @@
 .Op Fl c
 .Op Fl m Ar model
 .Op Fl s Ar prompt
-.Op Fl u Ar url
 .Sh DESCRIPTION
 .Nm
 starts a chat with a large language model.
@@ -27,19 +26,35 @@ a line consisting of just a literal dot character
 sends the prompt.
 Subsequent replies and prompts are included as context for the model's responses.
 .Pp
-An API key written to
-.Pa $HOME/.config/openai/key
-will be included with each request for authentication.
+A configuration file written to
+.Pa $HOME/.config/openai
+will direct
+.Nm
+how to connect to the chat completion HTTP API
+and set any completion options.
+The file consists of key-value pairs separated by whitespace,
+one per line.
+Blank lines and lines beginning with "#" are ignored.
+The following options may be set:
+.Bl -tag -width Ds
+.It Ic url Ar url
+The base URL where an OpenAI-compatible HTTP API is served.
+The default is
+.Ar http://127.0.0.1:8080 .
+.It Ic token Ar string
+The bearer token used to authenticate requests against the HTTP API.
+.It Ic model Ar name
+Request prompts be completed by model
+.Ar name .
+.El
 .Pp
-The following flags are understood:
+The following command-line flags are understood:
 .Bl -tag -width Ds
 .It Fl c
 Start a back-and-forth chat.
 .It Fl m Ar model
 Prompt
 .Ar model .
-The default is
-.Ar ministral-8b-latest .
 Note that
 .Xr llama-server 1
 from llama.cpp ignores this value.
@@ -47,17 +62,23 @@ from llama.cpp ignores this value.
 Set
 .Ar prompt
 as the system prompt.
-.It Fl u Ar url
-Connect to the OpenAI API root at
-.Ar url .
-The default is
-.Ar http://127.0.0.1:8080 .
-.Sh EXAMPLE
+.El
+.Sh EXAMPLES
 .Pp
 Chat with a locally-hosted Mistral NeMo model:
 .Bd -literal -offset Ds
 llama-server -m models/Mistral-Nemo-Instruct-2407-Q6_K.gguf -c 16384 -fa &
 echo "Hello, world!" | llm
+.Ed
+.Pp
+A configuration file to use Mistral's hosted language models,
+using a small model if none is specified at the command line:
+.Bd -literal -offset Ds
+url https://api.mistral.ai
+token abcdef12345678
+# use smaller models to boil oceans a bit more slowly
+model ministral-8b-latest
+# model mistral-small-latest
 .Ed
 .Sh EXIT STATUS
 .Ex
