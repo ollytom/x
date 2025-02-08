@@ -36,7 +36,7 @@ then
 	exit 1
 fi
 
-curl -s -u $auth $files https://api.bitbucket.org/2.0/snippets/audinate \
+curl -s -u $auth -F is_private=true $files https://api.bitbucket.org/2.0/snippets/audinate \
 	| sed 's/}/\n/g' \
 	| tr -d '{}",' \
 	| sed 's/href//g' \
