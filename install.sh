@@ -5,3 +5,10 @@ cp bin/* $HOME/bin
 
 mkdir -p $HOME/.config/git
 cp lib/git $HOME/.config/git/config
+
+if uname | grep OpenBSD
+then
+	mkdir -p $HOME/.config/gtk-3.0 $HOME/.config/gtk-4.0
+	cp lib/gtk.ini $HOME/.config/gtk-3.0/settings.ini
+	cp lib/gtk.ini $HOME/.config/gtk-4.0/settings.ini
+fi
