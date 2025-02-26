@@ -12,13 +12,13 @@ import (
 type Role string
 
 const (
-	RoleSystem    Role = "system"
-	RoleUser      Role = "user"
-	RoleAssistant      = "assistant"
+	RoleSystem    = "system"
+	RoleUser      = "user"
+	RoleAssistant = "assistant"
 )
 
 type Message struct {
-	Role    Role   `json:"role"`
+	Role    string `json:"role"`
 	Content string `json:"content"`
 }
 
