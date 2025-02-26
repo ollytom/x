@@ -13,7 +13,11 @@
 	fp = format-patch
 [fetch]
 	prune = true
+	pruneTags = true
+	all = true
 [push]
 	autoSetupRemote = true
 [diff]
 	noprefix = true
+[rebase]
+	updateRefs = true
