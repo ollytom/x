@@ -1,0 +1,20 @@
+#!/bin/sh
+
+dir=/sys/class/backlight/intel_backlight
+if ! test -e $dir
+then
+	echo $dir does not exist 1>&2
+	exit 1
+fi
+
+pct="0.$1"
+if test $1 -eq 100
+then
+	pct=1
+fi
+
+max=`cat $dir/max_brightness`
+echo $pct $max | awk '{
+	x = $1 * $2
+	print int(x)
+}' > $dir/brightness

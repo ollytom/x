@@ -4,6 +4,7 @@ To install, run install.sh.
 
 The following commands are provided:
 
+- backlight - set backlight brightness
 - bbsnip - create a snippet on BitBucket
 - hits - count web traffic
 - hlsget - download the contents of a HLS playlist

@@ -1,0 +1,24 @@
+.Dd
+.Dt BACKLIGHT 1
+.Sh NAME
+.Nm backlight
+.Nd set backlight brightness
+.Sh SYNOPSIS
+.Nm
+.Ar percent
+.Sh DESCRIPTION
+.Nm
+sets the backlight device brightness to the given percentage of the maximum.
+.Sh EXAMPLE
+Set maximum brightness,
+then go back down to 50% brightness:
+.Bd -literal -offset Ds
+backlight 100
+backlight 50
+.Ed
+.Sh FILES
+.Pa /sys/class/backlight
+.Sh EXIT STATUS
+.Ex
+.Sh SEE ALSO
+.Xr sysfs 5
