@@ -51,7 +51,7 @@ func TestMarshal(t *testing.T) {
 	}
 }
 
-func TestEncoder(t *testing.T) {
+func TestDecoder(t *testing.T) {
 	f, err := os.Open("testdata/1.xml")
 	if err != nil {
 		t.Fatal(err)
