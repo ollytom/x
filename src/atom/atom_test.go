@@ -16,7 +16,7 @@ func TestMarshal(t *testing.T) {
 			{HRef: "http://example.org/"},
 		},
 		Updated: time.Date(2003, time.Month(12), 13, 18, 30, 2, 0, time.UTC),
-		Author:  Author{Name: "John Doe"},
+		Author:  &Author{Name: "John Doe"},
 		ID:      "urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6",
 		Entries: []Entry{
 			{

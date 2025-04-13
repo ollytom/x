@@ -33,7 +33,7 @@ type Entry struct {
 	ID        string     `xml:"id"`
 	Title     string     `xml:"title"`
 	Updated   time.Time  `xml:"updated,omitempty"`
-	Author    Author     `xml:"author"`
+	Author    *Author    `xml:"author,omitempty"`
 	Links     []Link     `xml:"link"`
 	Summary   string     `xml:"summary,omitempty"`
 	Content   []byte     `xml:"content,omitempty"`
