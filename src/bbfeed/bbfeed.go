@@ -31,7 +31,7 @@ func Feed(prs []PullRequest) *atom.Feed {
 			Updated:   pr.Updated,
 			Published: &pr.Created,
 			Summary:   pr.Description,
-			Author:    atom.Author{Name: pr.Author.DisplayName},
+			Author:    &atom.Author{Name: pr.Author.DisplayName},
 			Content:   []byte(pr.Summary.HTML),
 		}
 		if pr.Updated.After(feed.Updated) {
@@ -76,7 +76,6 @@ func main() {
 	http.HandleFunc("/", srv.handleReq)
 	log.Fatal(http.ListenAndServe(":8069", nil))
 	return
-
 
 	workspace := os.Args[1]
 	repos, err := client.Repositories(workspace)
