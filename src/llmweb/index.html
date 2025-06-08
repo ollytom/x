@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://www.olowe.co/style.css">
+<style>
+textarea {
+	width: 80%;
+}
+
+pre {
+	font-family: sans-serif;
+	white-space: pre-wrap;
+}
+
+label {
+	font-style: italic;
+}
+</style>
+
+<title>llmweb</title>
+</head>
+
+<body>
+<header>
+<nav>
+<a href="/">New</a>
+Model: <code>{{.Model}}</code>
+</nav>
+</header>
+
+<main>
+<form method="POST">
+{{range .Messages}}
+	<label for="{{.Role}}">{{.Role}}</label>
+	{{- if eq .Role "system"}}
+	<p><textarea name="{{.Role}}" id="system" placeholder="Answer concisely...">{{.Content}}</textarea></p>
+	{{else}}
+	<textarea name="{{.Role}}" hidden>{{.Content}}</textarea>
+	<pre>{{.Content}}</pre>
+	{{end}}
+{{end}}
+<textarea name="user" rows=4 placeholder="Provide an overview of..."></textarea>
+<br>
+<input type="submit" />
+</form>
+</main>
+
+</body>
+</html>
