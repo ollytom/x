@@ -1,10 +1,10 @@
 #!/bin/sh
 
-firefox="Mozilla/5.0 (X11; Linux x86_64; rv:132.0) Gecko/20100101 Firefox/132.0"
+firefox="Mozilla/5.0 (X11; Linux x86_64; rv:138.0) Gecko/20100101 Firefox/138.0"
 
 prog='
 /duckduckgo.com\/y.js/ { next } # skip ads
-/Sponsored link/ { next } # skip ads
+/Sponsored link/ { next } # skip ads--compressed
 /result-link/ {
 	$1=$1
 	link = substr($3, index($3, "\""), length($3))
@@ -17,4 +17,4 @@ prog='
 }
 '
 
-curl -s --data-urlencode "q=$*" -H "User-Agent: $firefox" https://lite.duckduckgo.com/lite/ | awk "$prog"
+curl -s --compressed --data-urlencode "q=$*" -H "User-Agent: $firefox" https://lite.duckduckgo.com/lite/ | awk "$prog"
