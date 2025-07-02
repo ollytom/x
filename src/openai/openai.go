@@ -97,7 +97,9 @@ func (c *Client) Complete(chat *Chat) (*Message, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode >= 400 && resp.StatusCode <= 499 {
+	if resp.StatusCode == http.StatusUnauthorized {
+		return nil, fmt.Errorf("unauthorised")
+	} else if resp.StatusCode >= 400 && resp.StatusCode <= 499 {
 		var aerr apiError
 		if err := json.NewDecoder(resp.Body).Decode(&aerr); err != nil {
 			return nil, fmt.Errorf(resp.Status)
