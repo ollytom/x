@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# https://developer.atlassian.com/cloud/bitbucket/rest/api-group-pullrequests
+
+confpath="$HOME/.config/atlassian/bitbucket.org"
+if ! test -f $confpath
+then
+	echo "load auth from $confpath: no such file"
+	exit 1
+fi
+auth=`sed 1q $confpath`
+
+repo=`git remote get-url origin | awk -F : '{print $2}' | sed 's/\.git$//'`
+
+dest=main
+if git branch --list master | grep master > /dev/null
+then
+	dest=master
+fi
+
+cover=`mktemp`
+git log $dest.. | grep -v '^commit' > $cover
+
+if test -n $EDITOR
+then
+	EDITOR=vi
+fi
+$EDITOR $cover
+
+title=`sed -n 1p $cover`
+
+description=`awk 'NR > 2 { print }' $cover`
+rm $cover
+
+source=`git branch | grep '^\*' | awk '{print $2}'`
+body=`jq -c <<EOF
+{
+	"title": "$title",
+	"description": "$description",
+	"source": {
+		"branch": { "name": "$source" }
+	}
+}
+EOF`
+
+curl -s -u "$auth" --json "$body" https://api.bitbucket.org/2.0/repositories/$repo/pullrequests | jq .links.html.href
