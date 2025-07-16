@@ -91,7 +91,7 @@ func init() {
 func main() {
 	top, err := Top()
 	if err != nil {
-		log.Fatal(err)
+		log.Println("get top items:", err)
 	}
 
 	feed := &atom.Feed{
@@ -112,7 +112,7 @@ func main() {
 	for i := range top[:len(feed.Entries)] {
 		item, err := Get(top[i])
 		if err != nil {
-			log.Println(err)
+			log.Printf("get item %d: %v", top[i], err)
 			continue
 		}
 		feed.Entries[i] = atom.Entry{
@@ -128,9 +128,8 @@ func main() {
 		}
 	}
 
-	b, err := xml.MarshalIndent(feed, "", "\t")
-	if err != nil {
-		log.Fatal(err)
+	if err := xml.NewEncoder(os.Stdout).Encode(feed); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
-	os.Stdout.Write(b)
 }
