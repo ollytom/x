@@ -1,5 +1,6 @@
-// Command hnatom writes to the standard output a RFC 4287 Atom feed
+// Command hnatom generates a RFC 4287 Atom feed
 // of current top stories from the Hacker News front page.
+// The feed is written to the standard output.
 // The flags are:
 //
 //	-n count
@@ -19,7 +20,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
 
 	"olowe.co/x/atom"
@@ -41,7 +41,7 @@ type Item struct {
 }
 
 func Get(id int) (*Item, error) {
-	u := fmt.Sprintf("%s/item/%s.json", apiRoot, strconv.Itoa(id))
+	u := fmt.Sprintf("%s/item/%d.json", apiRoot, id)
 	resp, err := http.Get(u)
 	if err != nil {
 		return nil, err
