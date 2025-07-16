@@ -8,7 +8,7 @@
 //
 // See also the [Hacker News API].
 //
-// [Hacker News API]: https://github.com/HackerNews/API
+// [Hacker News API]: https://raw.githubusercontent.com/HackerNews/API/refs/heads/master/README.md
 package main
 
 import (
