@@ -63,12 +63,12 @@ func Top() ([]int, error) {
 	return ids, err
 }
 
-const maxEntries = 5
-
 func entryContent(item *Item) []byte {
-	buf := &bytes.Buffer{}
-	fmt.Fprintf(buf, "Score: %d\n", item.Score)
-	fmt.Fprintln(buf, "<br>")
+	buf := bytes.NewBufferString(item.Text)
+	if item.Text != "" {
+		buf.WriteString("<p>")
+	}
+	fmt.Fprintf(buf, "Score: %d<br>", item.Score)
 	comments := fmt.Sprintf("https://news.ycombinator.com/item?id=%d", item.ID)
 	fmt.Fprintf(buf, "<a href=%q>Comments: %d", comments, item.Descendants)
 	return buf.Bytes()
@@ -89,6 +89,10 @@ func init() {
 }
 
 func main() {
+	item, err := Get(44597668)
+	fmt.Printf("%+v\n", item)
+	os.Exit(1)
+
 	top, err := Top()
 	if err != nil {
 		log.Println("get top items:", err)
@@ -109,13 +113,22 @@ func main() {
 		Entries: make([]atom.Entry, *numItems),
 	}
 
+	var j int
 	for i := range top[:len(feed.Entries)] {
 		item, err := Get(top[i])
 		if err != nil {
 			log.Printf("get item %d: %v", top[i], err)
 			continue
 		}
-		feed.Entries[i] = atom.Entry{
+		if item.Type != "story" {
+			continue
+		}
+		link := item.URL
+		if link == "" {
+			// Ask HN posts have no external URL set
+			link = fmt.Sprintf("https://news.ycombinator.com/item?id=%d", item.ID)
+		}
+		feed.Entries[j] = atom.Entry{
 			ID:      fmt.Sprintf("%s/item/%d.json", apiRoot, top[i]),
 			Title:   item.Title,
 			Updated: time.Unix(int64(item.Time), 0),
@@ -124,12 +137,16 @@ func main() {
 				URI:  "https://news.ycombinator.com/user?id=" + item.By,
 			},
 			Content: []byte(entryContent(item)),
-			Links:   []atom.Link{{HRef: item.URL}},
+			Links:   []atom.Link{{HRef: link}},
 		}
+		j++
 	}
+	feed.Entries = feed.Entries[:j]
 
-	if err := xml.NewEncoder(os.Stdout).Encode(feed); err != nil {
+	b, err := xml.MarshalIndent(feed, "", "\t")
+	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+	os.Stdout.Write(b)
 }
