@@ -67,6 +67,7 @@ func entryContent(item *Item) []byte {
 	buf := bytes.NewBufferString(item.Text)
 	if item.Text != "" {
 		buf.WriteString("<p>")
+		defer buf.WriteString("</p>")
 	}
 	fmt.Fprintf(buf, "Score: %d<br>", item.Score)
 	comments := fmt.Sprintf("https://news.ycombinator.com/item?id=%d", item.ID)
@@ -89,10 +90,6 @@ func init() {
 }
 
 func main() {
-	item, err := Get(44597668)
-	fmt.Printf("%+v\n", item)
-	os.Exit(1)
-
 	top, err := Top()
 	if err != nil {
 		log.Println("get top items:", err)
