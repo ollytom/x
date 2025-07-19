@@ -13,6 +13,5 @@ The following commands are provided:
 - llm - chat with a remote large language model
 - precis - summarise text
 - rfc - read IETF RFC documents
-- webpaste - create a web paste on webpaste.olowe.co
 - ws - web search
 - xstream - stream X display over the network
