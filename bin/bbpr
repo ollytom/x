@@ -16,6 +16,9 @@ dest=main
 if git branch --list master | grep master > /dev/null
 then
 	dest=master
+elif test -n $1
+then
+	dest=$1
 fi
 
 cover=`mktemp`
@@ -23,12 +26,10 @@ git log $dest.. | grep -v '^commit' > $cover
 
 if test -n $EDITOR
 then
-	EDITOR=vi
+	EDITOR=ed
 fi
 $EDITOR $cover
-
 title=`sed -n 1p $cover`
-
 description=`awk 'NR > 2 { print }' $cover`
 rm $cover
 

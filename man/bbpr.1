@@ -1,0 +1,60 @@
+.Dd
+.Dt BBPR 1
+.Sh NAME
+.Nm bbpr
+.Nd create a Bitbucket pull request
+.Sh SYNOPSIS
+.Nm
+.Op Ar branch
+.Sh DESCRIPTION
+.Nm
+creates a Bitbucket pull request to merge the currently checked-out branch
+with the named
+.Ar branch
+of the remote
+.Ar origin .
+If no destination
+.Ar branch
+is specified,
+.Ar main ,
+then
+.Ar master
+are tried.
+A URL pointing to the pull request is created on success.
+.Pp
+.Nm
+prompts for a pull request
+.Dq cover letter ,
+similar to
+.Xr git-commit 1 ,
+by reading the
+.Ev EDITOR
+environment variable;
+otherwise
+.Xr ed 1 .
+The first line is the pull request's title.
+The second line is ignored and should be empty.
+The rest becomes the description.
+.Sh FILES
+.Bl -tag -width Ds
+.It Pa $HOME/.config/atlassian/bitbucket.org
+Configuration file containing a Bitbucket API token.
+.El
+.Sh EXIT STATUS
+.Ex
+.Sh EXAMPLES
+Create a pull request to merge test_refactor into main:
+.Bd -literal -offset indent
+git switch test_refactor
+bbpr
+.Ed
+.Pp
+Create a pull request to merge typo into test_refactor:
+.Bd -literal -offset indent
+git switch typo
+bbpr test_refactor
+.Ed
+.Sh SEE ALSO
+.Xr curl 1 ,
+.Xr jq 1 ,
+.Lk https://developer.atlassian.com/cloud/bitbucket/rest/api-group-pullrequests Bitbucket pull requests API reference
